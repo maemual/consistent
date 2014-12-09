@@ -42,10 +42,12 @@ func (x uints) Swap(i, j int) { x[i], x[j] = x[j], x[i] }
 // ErrEmptyCircle is the error returned when trying to get an element when nothing has been added to hash.
 var ErrEmptyCircle = errors.New("empty circle")
 
+var null struct{}
+
 // Consistent holds the information about the members of the consistent hash circle.
 type Consistent struct {
 	circle           map[uint32]string
-	members          map[string]bool
+	members          map[string]struct{}
 	sortedHashes     uints
 	NumberOfReplicas int
 	count            int64
@@ -59,7 +61,7 @@ func New() *Consistent {
 	c := new(Consistent)
 	c.NumberOfReplicas = 20
 	c.circle = make(map[uint32]string)
-	c.members = make(map[string]bool)
+	c.members = make(map[string]struct{})
 	return c
 }
 
@@ -80,7 +82,7 @@ func (c *Consistent) add(elt string) {
 	for i := 0; i < c.NumberOfReplicas; i++ {
 		c.circle[c.hashKey(c.eltKey(elt, i))] = elt
 	}
-	c.members[elt] = true
+	c.members[elt] = null
 	c.updateSortedHashes()
 	c.count++
 }
