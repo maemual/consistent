@@ -49,7 +49,6 @@ type Consistent struct {
 	sortedHashes     uints
 	NumberOfReplicas int
 	count            int64
-	scratch          [64]byte
 	sync.RWMutex
 }
 
