@@ -65,7 +65,6 @@ func New() *Consistent {
 
 // eltKey generates a string key for an element with an index.
 func (c *Consistent) eltKey(elt string, idx int) string {
-	// return elt + "|" + strconv.Itoa(idx)
 	return strconv.Itoa(idx) + elt
 }
 
@@ -245,7 +244,7 @@ func (c *Consistent) hashKey(key string) uint32 {
 
 func (c *Consistent) updateSortedHashes() {
 	hashes := c.sortedHashes[:0]
-	//reallocate if we're holding on to too much (1/4th)
+	// reallocate if we're holding on to too much (1/4th)
 	if cap(c.sortedHashes)/(c.NumberOfReplicas*4) > len(c.circle) {
 		hashes = nil
 	}
